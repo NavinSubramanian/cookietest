@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cookie Test Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      button {
+        margin: 5px 0;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .output {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        background: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cookie Test Page</h1>
+    <p>Use the buttons below to interact with cookies:</p>
+
+    <button id="setCookie">Set Cookie</button>
+    <button id="modifyCookie">Modify Cookie</button>
+    <button id="deleteCookie">Delete Cookie</button>
+    <button id="readCookies">Read All Cookies</button>
+
+    <div class="output" id="output"></div>
+
+    <script>
+      const output = document.getElementById("output");
+
+      // Set a cookie
+      document.getElementById("setCookie").addEventListener("click", () => {
+        document.cookie =
+          "testCookie=initialValue; expires=Thu, 18 Dec 2028 12:00:00 UTC";
+        output.innerText = "Cookie set: testCookie=initialValue";
+      });
+
+      // Modify the cookie
+      document.getElementById("modifyCookie").addEventListener("click", () => {
+        document.cookie =
+          "testCookie=modifiedValue; expires=Thu, 18 Dec 2028 12:00:00 UTC";
+        output.innerText = "Cookie modified: testCookie=modifiedValue";
+      });
+
+      // Delete the cookie
+      document.getElementById("deleteCookie").addEventListener("click", () => {
+        document.cookie =
+          "testCookie=; path=/; expires=Thu, 18 Dec 2028 12:00:00 UTC";
+        output.innerText = "Cookie deleted: testCookie";
+      });
+
+      // Read all cookies
+      document.getElementById("readCookies").addEventListener("click", () => {
+        const cookies = document.cookie;
+        output.innerText = cookies ? `Cookies: ${cookies}` : "No cookies found";
+      });
+    </script>
+  </body>
+</html>
