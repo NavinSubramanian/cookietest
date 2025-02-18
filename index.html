@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cookie Test Page</title>
+    <title>Vulnerable Cookie Test Page</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -24,44 +24,68 @@
     </style>
   </head>
   <body>
-    <h1>Cookie Test Page</h1>
+    <h1>Vulnerable Cookie Test Page</h1>
     <p>Use the buttons below to interact with cookies:</p>
 
-    <button id="setCookie">Set Cookie</button>
+    <button id="setVulnerableCookie">Set Vulnerable Cookie</button>
     <button id="modifyCookie">Modify Cookie</button>
     <button id="deleteCookie">Delete Cookie</button>
     <button id="readCookies">Read All Cookies</button>
+    <button id="csrfTest">Simulate CSRF Attack</button>
+    <button id="setThirdPartyCookie">Set Third-Party Cookie</button>
 
     <div class="output" id="output"></div>
 
     <script>
       const output = document.getElementById("output");
 
-      // Set a cookie
-      document.getElementById("setCookie").addEventListener("click", () => {
-        document.cookie =
-          "testCookie=initialValue; expires=Thu, 18 Dec 2028 12:00:00 UTC";
-        output.innerText = "Cookie set: testCookie=initialValue";
+      // Set a vulnerable cookie (No HttpOnly, No Secure, No SameSite)
+      document.getElementById("setVulnerableCookie").addEventListener("click", () => {
+        document.cookie = "vulnerableCookie=exposedValue; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/";
+        output.innerText = "Vulnerable cookie set: vulnerableCookie=exposedValue";
       });
 
       // Modify the cookie
       document.getElementById("modifyCookie").addEventListener("click", () => {
-        document.cookie =
-          "testCookie=modifiedValue; expires=Thu, 18 Dec 2028 12:00:00 UTC";
-        output.innerText = "Cookie modified: testCookie=modifiedValue";
+        document.cookie = "vulnerableCookie=hackedValue; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/";
+        output.innerText = "Cookie modified: vulnerableCookie=hackedValue";
       });
 
       // Delete the cookie
       document.getElementById("deleteCookie").addEventListener("click", () => {
-        document.cookie =
-          "testCookie=; path=/; expires=Thu, 18 Dec 2028 12:00:00 UTC";
-        output.innerText = "Cookie deleted: testCookie";
+        document.cookie = "vulnerableCookie=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+        output.innerText = "Cookie deleted: vulnerableCookie";
       });
 
       // Read all cookies
       document.getElementById("readCookies").addEventListener("click", () => {
         const cookies = document.cookie;
         output.innerText = cookies ? `Cookies: ${cookies}` : "No cookies found";
+      });
+
+      // Simulate a CSRF attack by sending a request with cookies automatically attached
+      document.getElementById("csrfTest").addEventListener("click", () => {
+        fetch("https://your-vulnerable-endpoint.com/transfer", {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({ amount: "1000", to: "attacker" })
+        }).then(() => {
+          output.innerText = "CSRF request sent! If the site lacks CSRF protection, it might succeed.";
+        });
+      });
+
+      // Set a third-party cookie by loading an iframe from another domain
+      document.getElementById("setThirdPartyCookie").addEventListener("click", () => {
+        const iframe = document.createElement("iframe");
+        iframe.src = "https://example.com"; // Replace with a third-party domain
+        iframe.style.display = "none"; // Hide the iframe
+        document.body.appendChild(iframe);
+
+        // Wait a bit before interacting with the iframe to set a cookie
+        setTimeout(() => {
+          iframe.contentWindow.document.cookie = "thirdPartyCookie=testValue; path=/";
+          output.innerText = "Third-party cookie set inside iframe.";
+        }, 1000);
       });
     </script>
   </body>
