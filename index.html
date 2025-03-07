@@ -70,6 +70,39 @@
         const cookies = document.cookie;
         output.innerText = cookies ? `Cookies: ${cookies}` : "No cookies found";
       });
+
+      // Third party cookie implement
+      document.getElementById("setThirdPartyCookie").addEventListener("click", () => {
+        const externalLinks = document.querySelectorAll('.external-link');
+        const visitedSites = [];
+
+        externalLinks.forEach(link => {
+          const domain = new URL(link.href).hostname;
+          const cookieName = `visited_${domain.replace(/\./g, '_')}`;
+          
+          // Set cookie for each external link
+          document.cookie = `${cookieName}=${link.href}; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/`;
+          visitedSites.push(domain);
+        });
+
+        output.innerText = `Third-party cookies set for: ${visitedSites.join(', ')}`;
+      });
+
+      // Add click event listeners to external links
+      document.querySelectorAll('.external-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const domain = new URL(link.href).hostname;
+          const cookieName = `visited_${domain.replace(/\./g, '_')}`;
+          
+          // Set cookie when link is clicked
+          document.cookie = `${cookieName}=${link.href}; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/`;
+          output.innerText = `Cookie set for external site: ${domain}`;
+          
+          // Open the link in a new tab
+          window.open(link.href, '_blank');
+        });
+      });
     </script>
   </body>
 </html>
