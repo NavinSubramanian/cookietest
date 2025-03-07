@@ -37,12 +37,7 @@
     <button id="setThirdPartyCookie">Set Third-Party Cookie</button>
     <button id="deleteThirdPartyCookie">Delete Third-Party Cookie</button>
 
-    <div>
-      <h3>External Links:</h3>
-      <a href="https://example.com" class="external-link">Example.com</a><br>
-      <a href="https://google.com" class="external-link">Google</a><br>
-      <a href="https://github.com" class="external-link">GitHub</a>
-    </div>
+    <iframe id="thirdPartyFrame" src="https://example.com/cookie-setter" style="display:none;"></iframe>
 
     <script>
       const output = document.getElementById("output");
@@ -76,51 +71,15 @@
 
       // Third party cookie implement
       document.getElementById("setThirdPartyCookie").addEventListener("click", () => {
-        const externalLinks = document.querySelectorAll('.external-link');
-        const visitedSites = [];
-
-        externalLinks.forEach(link => {
-          const domain = new URL(link.href).hostname;
-          const cookieName = `visited_${domain.replace(/\./g, '_')}`;
-          
-          // Set cookie for each external link
-          document.cookie = `${cookieName}=${link.href}; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/`;
-          visitedSites.push(domain);
-        });
-
-        output.innerText = `Third-party cookies set for: ${visitedSites.join(', ')}`;
+          const iframe = document.getElementById("thirdPartyFrame");
+          iframe.src = "https://example.com/cookie-setter"; // Load external site
+          console.log("Third-party cookie requested.");
       });
-
-      // Add click event listeners to external links
-      document.querySelectorAll('.external-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const domain = new URL(link.href).hostname;
-          const cookieName = `visited_${domain.replace(/\./g, '_')}`;
-          
-          // Set cookie when link is clicked
-          document.cookie = `${cookieName}=${link.href}; expires=Thu, 18 Dec 2028 12:00:00 UTC; path=/`;
-          output.innerText = `Cookie set for external site: ${domain}`;
-          
-          // Open the link in a new tab
-          window.open(link.href, '_blank');
-        });
-      });
-
+      
       document.getElementById("deleteThirdPartyCookie").addEventListener("click", () => {
-        const externalLinks = document.querySelectorAll('.external-link');
-        const deletedSites = [];
-
-        externalLinks.forEach(link => {
-          const domain = new URL(link.href).hostname;
-          const cookieName = `visited_${domain.replace(/\./g, '_')}`;
-          
-          // Delete cookie for each external link
-          document.cookie = `${cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
-          deletedSites.push(domain);
-        });
-
-        output.innerText = `Third-party cookies deleted for: ${deletedSites.join(', ')}`;
+          const iframe = document.getElementById("thirdPartyFrame");
+          iframe.src = "https://example.com/cookie-deleter"; // Load external site to delete cookies
+          console.log("Third-party cookie deletion requested.");
       });
     </script>
   </body>
