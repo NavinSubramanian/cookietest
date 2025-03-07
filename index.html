@@ -37,7 +37,7 @@
     <button id="setThirdPartyCookie">Set Third-Party Cookie</button>
     <button id="deleteThirdPartyCookie">Delete Third-Party Cookie</button>
 
-    <iframe id="thirdPartyFrame" src="https://example.com/cookie-setter" style="display:none;"></iframe>
+    <iframe id="thirdPartyFrame" src="https://github.com/" style="display:none;"></iframe>
 
     <script>
       const output = document.getElementById("output");
@@ -72,13 +72,13 @@
       // Third party cookie implement
       document.getElementById("setThirdPartyCookie").addEventListener("click", () => {
           const iframe = document.getElementById("thirdPartyFrame");
-          iframe.src = "https://example.com/cookie-setter"; // Load external site
+          iframe.src = "https://github.com/"; // Load external site
           console.log("Third-party cookie requested.");
       });
       
       document.getElementById("deleteThirdPartyCookie").addEventListener("click", () => {
           const iframe = document.getElementById("thirdPartyFrame");
-          iframe.src = "https://example.com/cookie-deleter"; // Load external site to delete cookies
+          iframe.src = "https://github.com/"; // Load external site to delete cookies
           console.log("Third-party cookie deletion requested.");
       });
     </script>
