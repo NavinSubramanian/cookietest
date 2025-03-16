@@ -30,6 +30,7 @@
     <button id="setCookie">Set Cookie</button>
     <button id="modifyCookie">Modify Cookie</button>
     <button id="deleteCookie">Delete Cookie</button>
+    <button id="setFacebookCookie">Set Facebook Cookie</button>
     <button id="readCookies">Read All Cookies</button>
 
     <div class="output" id="output"></div>
@@ -61,6 +62,13 @@
         document.cookie =
           "testCookie=; path=/; expires=Thu, 18 Dec 2028 12:00:00 UTC";
         output.innerText = "Cookie deleted: testCookie";
+      });
+
+      // Set Facebook cookie
+      document.getElementById("setFacebookCookie").addEventListener("click", () => {
+        document.cookie =
+          "fbCookie=user123456; expires=Thu, 18 Dec 2028 12:00:00 UTC";
+        output.innerText = "Facebook Cookie set: fbCookie=user123456";
       });
 
       // Read all cookies
