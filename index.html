@@ -31,6 +31,7 @@
     <button id="modifyCookie">Modify Cookie</button>
     <button id="deleteCookie">Delete Cookie</button>
     <button id="setFacebookCookie">Set Facebook Cookie</button>
+    <button id="createSessionToken">Create Session Token</button>
     <button id="readCookies">Read All Cookies</button>
 
     <div class="output" id="output"></div>
@@ -89,6 +90,29 @@
           iframe.src = "https://github.com/"; // Load external site to delete cookies
           console.log("Third-party cookie deletion requested.");
       });
+
+      document.getElementById("createSessionToken").addEventListener("click", () => {
+          // Generate a random session token
+          const randomToken = generateRandomToken(32);
+          
+          // Set the session token as a cookie with session lifetime (expires when browser closes)
+          document.cookie = `sessionToken=${randomToken}; path=/; SameSite=Strict`;
+          
+          output.innerText = `Session Token created: ${randomToken}`;
+      });
+      
+      // Function to generate a random token
+      function generateRandomToken(length) {
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          let result = '';
+          const charactersLength = characters.length;
+          
+          for (let i = 0; i < length; i++) {
+              result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          }
+          
+          return result;
+      }
     </script>
   </body>
 </html>
